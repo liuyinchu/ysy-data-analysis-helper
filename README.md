@@ -1,2 +1,2 @@
-# lp-data-analysis-helper
+# ysy-data-analysis-helper
 Personal Data Analusis Utils
