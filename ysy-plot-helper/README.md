@@ -1,53 +1,52 @@
+# Plotting Helper: `ysy_plot_helper.py`
 
-# 绘图助手 `ysy_plot_helper.py`
+A lightweight and pragmatic personal Python plotting helper based on Matplotlib.
 
-一个轻量、务实的个人 Python 绘图助手，基于 Matplotlib。
+It provides an "out-of-the-box" standardized plotting function and a composable temporary style loader to help you maintain a consistent and aesthetically pleasing plotting style across Jupyter Notebooks, Python scripts, and academic papers.
 
-提供一个“开箱即用”的标准化绘图入口和一个可组合的临时样式加载器，帮助您在 Jupyter Notebook、Python 脚本与学术论文之间保持一致、美观的出图风格。
+## Features
 
-## ✨ 特性
+  * **Standardized plotting function `plot(...)`**: Creates common line or scatter plots with a single line of code, including settings for titles, axis labels, legends, and native support for multiple data series.
+  * **Temporary style loader `temp_style(...)`**: Utilizes a `with` block to dynamically combine multiple built-in style snippets and your custom configurations into a temporary `.mplstyle` file. This style is active only within the block and automatically reverts to Matplotlib's default settings upon exit, ensuring the global environment is never polluted.
+  * **Composable built-in style library `PRESET_STYLES`**: Includes a collection of well-designed style snippets, clearly categorized into "layout" (controlling dimensions, fonts, ticks, etc.) and "color" (controlling palettes, foreground/background colors, etc.), allowing you to mix and match them like building blocks to create the perfect visual style for your needs.
+  * **Quick style preview `print_preset_styles()`**: Quickly prints all available preset styles and their recommended combinations to the console for easy reference and selection.
 
-  * **标准化绘图函数 `plot(...)`**：一行代码完成常见的折线/散点图绘制，包括标题、坐标轴标签、图例等常用元素的设置，并原生支持多数据序列。
-  * **临时样式加载器 `temp_style(...)`**：以 `with` 代码块的形式，将多个内置样式片段与您的自定义配置项动态组合成一个临时的 `.mplstyle` 样式文件。该样式仅在代码块内生效，结束后自动恢复 Matplotlib 的默认设置，绝不污染全局环境。
-  * **可组合的内置样式库 `PRESET_STYLES`**：内置多套精心设计的样式片段，并清晰地将它们区分为“布局类”（控制尺寸、字体、坐标刻度等）与“配色类”（控制色盘、前景/背景色等），允许您像搭积木一样自由组合，创造出最适合您当前需求的视觉风格。
-  * **样式快速预览 `print_preset_styles()`**：在命令行中快速打印出所有可用的预设样式及其推荐组合，方便您随时查阅和选用。
+## Installation
 
-## 📦 安装
+To use, simply copy the `ysy_plot_helper.py` file into your project directory.
 
-将 `ysy_plot_helper.py` 文件复制到您的项目目录中即可使用。
+## Quick Start
 
-## 🚀 快速开始
-
-将脚本导入您的项目中：
+Import the script into your project:
 
 ```python
-# 导入 ysy_plot_helper.py
+# Import ysy_plot_helper.py
 import ysy_plot_helper as yph
 import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-### 1\. 快速出图 (`plot`)
+### 1\. Quick Plotting (`plot`)
 
-`yph.plot()` 封装了一个基础的 `matplotlib.pyplot` 绘图流程，特别适合快速可视化数据。
+`yph.plot()` encapsulates a basic `matplotlib.pyplot` workflow, ideal for rapid data visualization.
 
 ```python
-# 准备数据
+# Prepare data
 x = np.linspace(0, 2 * np.pi, 200)
 y = np.sin(x)
 
-# 一行代码出图
+# Plot with a single line of code
 yph.plot(x, y, legend_name='sin(x)', plot_title='Sine Wave', x_label='Radian', y_label='Value')
 ```
 
-### 2\. 临时样式加载 (`temp_style`)
+### 2\. Temporary Style Loading (`temp_style`)
 
-使用 `with` 语句和 `yph.temp_style()`，可以保证样式只在代码块内部生效，不影响其他图表。
+Using a `with` statement with `yph.temp_style()` ensures that the style is only applied within the code block, leaving other plots unaffected.
 
 ```python
-# 在 with 代码块中使用推荐的 "学术" + "天空蓝" 风格
+# Use the recommended "ysy_academic" + "sky" style within a with block
 with yph.temp_style(["ysy_academic", "sky"]):
-    # 在这里创建你的图形
+    # Create your plot here
     fig, ax = plt.subplots()
     ax.plot(x, np.sin(x), label='sin(x)')
     ax.plot(x, np.cos(x), label='cos(x)')
@@ -57,7 +56,7 @@ with yph.temp_style(["ysy_academic", "sky"]):
     ax.legend()
     plt.show()
 
-# 在 with 代码块之外，Matplotlib 样式会恢复到之前的状态
+# Outside the with block, the Matplotlib style reverts to its previous state
 fig, ax = plt.subplots()
 ax.plot(x, np.tan(x), label='tan(x)')
 ax.set_title('Another Plot with Default Style')
@@ -65,13 +64,13 @@ ax.legend()
 plt.show()
 ```
 
-*更多详细用法请参考 `examples.ipynb` 文件。*
+*For more detailed examples, please refer to the `examples.ipynb` file.*
 
-## 📚 API 参考
+## API Reference
 
 ### `yph.plot(...)`
 
-一个高级绘图函数，用于快速创建单轴、单图的折线图或散点图。
+A high-level plotting function for quickly creating single-axis, single-figure line or scatter plots.
 
 ```python
 plot(
@@ -87,27 +86,27 @@ plot(
 )
 ```
 
-**参数说明：**
+**Parameters:**
 
-  * `x` (array-like): 横轴数据。
-  * `y` (array-like or list/tuple of array-like): 纵轴数据。若为列表/元组，则绘制多条序列。
-  * `legend_name` (str or list[str]): 图例名称，应与 `y` 的序列数量匹配。
-  * `plot_title` (str): 图表主标题。
-  * `x_label` (str): 横轴标签。
-  * `y_label` (str): 纵轴标签。
-  * `plot_type` (str): 绘图类型，可选 `'curve'` (折线图) 或 `'scatter'` (散点图)。
-  * `legend_title` (str): 图例的标题。
-  * `data_point` (tuple): 格式为 `(x0, y0)`。仅在单序列绘图时生效，用于高亮标记图上的一个特定数据点。
+  * `x` (array-like): Data for the horizontal axis.
+  * `y` (array-like or list/tuple of array-like): Data for the vertical axis. If a list/tuple, multiple series will be plotted.
+  * `legend_name` (str or list[str]): Legend name(s), should match the number of series in `y`.
+  * `plot_title` (str): The main title of the plot.
+  * `x_label` (str): The label for the horizontal axis.
+  * `y_label` (str): The label for the vertical axis.
+  * `plot_type` (str): The type of plot, either `'curve'` (line plot) or `'scatter'` (scatter plot).
+  * `legend_title` (str): The title for the legend.
+  * `data_point` (tuple): A tuple in the format `(x0, y0)`. Only effective for single-series plots, used to highlight a specific data point on the graph.
 
-**返回：**
+**Returns:**
 
-  * `None`: 该函数内部直接调用 `plt.show()` 来显示图像，不返回任何对象。
+  * `None`: This function calls `plt.show()` internally to display the figure and does not return any object.
 
-*注意：此函数旨在处理最常见的“单轴单图”场景。对于复杂布局（如多子图、双Y轴等），请直接使用 Matplotlib 的原生 API，并搭配 `temp_style(...)` 来统一风格。*
+*Note: This function is designed for the most common "single-axis, single-figure" scenarios. For complex layouts (e.g., subplots, twin axes), please use Matplotlib's native API in conjunction with `temp_style(...)` to unify the style.*
 
 ### `yph.temp_style(...)`
 
-一个上下文管理器，用于在特定的代码块内临时应用一组 Matplotlib 样式。
+A context manager for temporarily applying a set of Matplotlib styles within a specific code block.
 
 ```python
 temp_style(
@@ -116,69 +115,68 @@ temp_style(
 )
 ```
 
-**参数说明：**
+**Parameters:**
 
-  * `style_keys` (list[str]): 一个包含预设样式名称（`PRESET_STYLES` 中的键）的列表。样式会按照列表中的顺序依次叠加生效。
-  * `extra_style` (str): 一个包含额外 `rcParams` 配置的字符串（每行一个配置，例如 `'figure.dpi: 150'`）。这些配置会追加在 `style_keys` 定义的样式之后，拥有最高优先级。
+  * `style_keys` (list[str]): A list of preset style names (keys from `PRESET_STYLES`). Styles are applied sequentially in the order they appear in the list.
+  * `extra_style` (str): A string containing additional `rcParams` configurations (one per line, e.g., `'figure.dpi: 150'`). These are applied after the `style_keys` styles and have the highest priority.
 
-**用法：**
+**Usage:**
 
-  * 必须与 `with` 语句一同使用。进入 `with` 块时，它会自动生成一个临时的 `.mplstyle` 文件并应用该样式；退出 `with` 块时（无论正常退出还是发生异常），它都会自动恢复之前的样式设置并删除临时文件。
+  * Must be used with a `with` statement. Upon entering the `with` block, it generates and applies a temporary `.mplstyle` file. Upon exiting the block (either normally or via an exception), it automatically restores the previous style settings and deletes the temporary file.
 
-## 🎨 内置样式介绍
+## Built-in Styles
 
-以下是三种推荐的样式组合，您可以根据需求选用或进行修改。
+Below are three recommended style combinations you can use or modify.
 
 ### 1\. `"ysy_academic"` + `"sky"`
 
-这套组合是为学术写作而设计的，特别是为了与我的另一个项目 **Ysy LaTeX 模板** 完美配合。
-设计的核心理念是：当生成的图片以 `0.7\textwidth` 的宽度插入 LaTeX 文档时，图中的文字大小（如标题、标签）应与文章的正文字号（约 11pt）基本一致，且图片的宽高比接近黄金比例，以获得最佳的视觉协调性。`"sky"` 配色方案同样源自 Ysy LaTeX 中的同名主题。
+This combination is designed for academic writing, especially to pair perfectly with my other project, the **Ysy LaTeX template**. The core design principle is that when the generated figure is inserted into a LaTeX document at `0.7\textwidth`, the font size of elements like the title and labels should closely match the document's main body text (around 11pt), and the aspect ratio should be near the golden ratio for optimal visual harmony. The `"sky"` color scheme also originates from the theme of the same name in Ysy LaTeX.
 
 ### 2\. `"science"` + `"science_color"`
 
-这套组合的灵感与设计绝大部分来自于优秀的 `SciencePlots` 包，旨在复现顶级期刊 *Science* 的绘图风格。其简洁、清晰、专业的视觉呈现使其非常适用于正式的科学出版物。特别地，它与 Ysy LaTeX 模板中的 `Elegant` 配色主题也十分搭调。
+The inspiration and design of this combination are largely drawn from the excellent `SciencePlots` package, aiming to replicate the plotting style of the top-tier journal *Science*. Its clean, clear, and professional appearance makes it highly suitable for formal scientific publications. It also pairs well with the `Elegant` color theme in the Ysy LaTeX template.
 
 ### 3\. `"ieee"` + `"ieee_color"`
 
->IEEE requires figures to be readable when printed in black and white. The ieee style also sets the figure width to fit within one column of an IEEE paper.
+> IEEE requires figures to be readable when printed in black and white. The ieee style also sets the figure width to fit within one column of an IEEE paper.
 
-这套样式的诞生源于一个触动我的故事：
+The creation of this style was inspired by a story that moved me:
 
-> 某天网上冲浪，看到这样一条消息，颇有感触：“在德国参加几次会议，真的会见到好几个那种路都走不稳，退休好多年的老教授还去参加会议，真的觉得他们是真热爱。之前外导还嘱咐我，文章里的图颜色别花花绿绿的，尽量用黑白，因为会有老教授不喜欢读电子版的，他们喜欢打印出来读，如果你文章里全是花花绿绿的，他们打印下来也分辨不清。”
+> While browsing the internet one day, I came across a message that struck me: "Having attended several conferences in Germany, I've seen many retired professors, some so old they are unsteady on their feet, still participating. You can tell they are truly passionate. My former advisor once told me to avoid overly colorful plots in papers and use black and white as much as possible, because some old professors dislike reading on a screen. They prefer to print articles out, and if your plots are too colorful, they can't distinguish the details in a black-and-white printout."
 
-这个故事提醒我们，学术成果的传播应当考虑到所有读者，包括那些习惯于阅读黑白打印稿的老一辈学者。IEEE 的出版规范也明确要求：“图形在黑白打印时必须是可读的”。因此，我参考 `SciencePlots` 实现了这套 `ieee` 样式，它不仅优化了灰度可读性，还将图形宽度默认设置为适合 IEEE 双栏论文的单栏宽度。
+This story is a reminder that academic work should be accessible to all readers, including older generations of scholars who are accustomed to reading black-and-white printouts. The IEEE publication guidelines also explicitly state this requirement. Therefore, I implemented this `ieee` style, referencing `SciencePlots`, which not only optimizes for grayscale readability but also sets the default figure width to fit a single column in a standard two-column IEEE paper.
 
-> “真正的科研工作者总是前赴后继地奔赴那片荒原。”
+> "True researchers are pioneers, always venturing into the wilderness."
 
-希望这份小小的脚本，能为您的探索之路提供些许便利。
+I hope this small script can offer some convenience on your path of discovery.
 
-## ❓ 常见问题 (FAQ)
+## FAQ
 
-**Q: 为什么我的代码会报颜色格式错误（例如，关于 hex 码）？**
-A: 部分预设样式（如 Catppuccin）使用了不带 `#` 前缀的十六进制颜色码（例如 `89b4fa`）。虽然较新版本的 Matplotlib 能够解析它们，但部分版本或后端可能需要 `#89b4fa` 这种标准格式。如果您遇到颜色解析错误，请检查 `ysy_plot_helper.py` 中的 `PRESET_STYLES` 字典，并为相关的色值批量补上 `#` 前缀。
+**Q: Why does my code raise a color format error (e.g., about hex codes)?**
+A: Some preset styles (like Catppuccin) use hex color codes without the `#` prefix (e.g., `89b4fa`). While newer versions of Matplotlib can parse these, some versions or backends may require the standard `#89b4fa` format. If you encounter a color parsing error, please check the `PRESET_STYLES` dictionary in `ysy_plot_helper.py` and add the `#` prefix to the relevant color values.
 
-**Q: `temp_style` 会在系统临时目录中写入文件吗？**
-A: 会的。它会在系统的临时目录中创建一个 `.mplstyle` 文件。当 `with` 块正常退出时，该文件会被自动删除。但如果您的 Python 进程被强制终止（例如 `kill -9`），这个临时文件可能会残留下来。不过，残留的文件不会影响脚本的正常功能。
+**Q: Does `temp_style` write files to the system's temporary directory?**
+A: Yes. It creates a `.mplstyle` file in the system's temporary directory. This file is automatically deleted when the `with` block exits normally. However, if your Python process is force-killed (e.g., with `kill -9`), this temporary file may remain. These residual files will not affect the script's functionality.
 
-**Q: `plot` 函数为什么总是调用 `plt.show()`，而不是返回 `fig` 和 `ax` 对象？**
-A: 这个函数的设计初衷是“快速出图”，用于简单的数据探索和可视化场景。如果您需要更灵活的对象级控制（例如，返回 `fig`, `ax` 对象以便进行更复杂的定制或保存），我们建议您直接使用 Matplotlib 的原生 API（如 `plt.subplots()`），或者根据您的需求，拷贝并微调 `plot` 函数的源码。
+**Q: Why does the `plot` function always call `plt.show()` instead of returning `fig` and `ax` objects?**
+A: This function was designed for "quick plotting" in simple data exploration and visualization scenarios. If you need more flexible object-level control (e.g., returning `fig` and `ax` for further customization or saving), we recommend using Matplotlib's native API (like `plt.subplots()`) or copying and slightly modifying the `plot` function's source code to fit your needs.
 
-**Q: 我该如何自定义或添加我自己的样式？**
-A: 有两种便捷的方式：
+**Q: How can I customize or add my own styles?**
+A: There are two easy ways:
 
-  * **方式 A (临时修改)**：将您的 `rcParams` 配置写成一个多行字符串，然后通过 `temp_style` 的 `extra_style` 参数传入。这是最快的方式。
-  * **方式 B (永久添加)**：直接在 `ysy_plot_helper.py` 文件的 `PRESET_STYLES` 字典中新增您的键值对。建议遵循“布局”与“配色”分离的原则来组织您的样式，以便更好地复用。
+  * **A (Temporary Modification)**: Write your `rcParams` configurations as a multi-line string and pass it through the `extra_style` parameter of `temp_style`. This is the quickest method.
+  * **B (Permanent Addition)**: Directly add your new key-value pair to the `PRESET_STYLES` dictionary in the `ysy_plot_helper.py` file. It is recommended to follow the principle of separating "layout" and "color" styles for better reusability.
 
-**Q: 如何配置保存图片（导出）时的参数？**
-A: 建议将这些参数配置在您的“布局类”样式中。常用的配置项包括：`savefig.bbox: tight` (自动裁剪白边), `savefig.pad_inches: 0.05` (设置边距), 以及设置一个合适的 `figure.dpi` (例如 `300`) 来保证导出图像的清晰度。
+**Q: How do I configure parameters for saving (exporting) figures?**
+A: It's best to configure these parameters within your "layout" styles. Common settings include `savefig.bbox: tight` (to automatically trim whitespace), `savefig.pad_inches: 0.05` (to set padding), and an appropriate `figure.dpi` (e.g., `300`) to ensure high-quality output.
 
-## 📜 参考与致谢
+## References and Acknowledgements
 
-本脚本的样式设计，特别是 `science` 和 `ieee` 风格，大量参考了 [**Science Plots**](https://github.com/garrettj403/SciencePlots) 项目。它是一个非常出色的 Matplotlib 样式库。
+The style designs in this script, particularly the `science` and `ieee` styles, are heavily inspired by and reference the [**Science Plots**](https://github.com/garrettj403/SciencePlots) project, which is an excellent Matplotlib style library.
 
-### 引用
+### Citation
 
-如果这个脚本对您的学术工作非常有帮助，希望您能考虑引用原作者的 `SciencePlots` 包：
+If this script is highly beneficial to your academic work, please consider citing the original author's `SciencePlots` package:
 
 ```bibtex
 @article{SciencePlots,
@@ -193,12 +191,12 @@ A: 建议将这些参数配置在您的“布局类”样式中。常用的配�
 }
 ```
 
-### 致谢
+### Acknowledgements
 
-  * Matplotlib 团队与广大的社区贡献者。
-  * 各经典配色方案（如 Catppuccin, Nord 等）的创作者。
-  * 所有为这个脚本提出宝贵反馈与建议的朋友们。
+  * The Matplotlib team and its vast community of contributors.
+  * The creators of various classic color schemes (e.g., Catppuccin, Nord).
+  * All friends who have provided valuable feedback and suggestions for this script.
 
-## 📄 许可
+## License
 
-本项目采用 [MIT License](https://www.google.com/search?q=LICENSE)。您可以自由地使用、修改与分发。
+This project is licensed under the [MIT License](https://www.google.com/search?q=LICENSE). You are free to use, modify, and distribute it.
